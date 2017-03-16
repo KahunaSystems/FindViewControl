@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.author             = "Kahuna"
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/Kruks/FindViewControl.git", :tag => "1.0.5" }
-  s.source_files  = "FindViewControl", "FindViewControl/**/*.{h,m,swift,xib,png}”
+  s.source_files  = "FindViewControl", "FindViewControl/**/*.{h,m,swift,xib,png}"
 s.requires_arc = true
 s.dependency 'MFSideMenu'
   s.dependency 'MBProgressHUD', '~> 0.9.2'
