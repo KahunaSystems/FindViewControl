@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "FindViewControl"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "FindViewControl."
   s.description  = "FindViewControl for plotting places"
   s.homepage     = "https://github.com/"
