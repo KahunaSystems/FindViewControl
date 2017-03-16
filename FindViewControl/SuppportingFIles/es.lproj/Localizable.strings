@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  FindViewControl
+
+  Created by Krutika Mac Mini on 3/10/17.
+  Copyright © 2017 Kahuna. All rights reserved.
+*/
+
+"useCurrentLocation"                = "Usar ubicación actual";
+"filtersNavTitle"                   = "Filtros";
+"selectAllButtonTitle"              = "Seleccionar todo";
+"unselectAllButtonTitle"            = "Deselecciona todo";
+"noPlacesFoundTitle"                = "No se han encontrado lugares.";
+"unableFindPlacesTitle"             = "Incapaz de conseguir lugares. Vuelve a intentarlo.";
+"OKButtonLabel"                     = "Visto bueno";
+"CancelButtonLabel"                 = "Cancelar";
+"networkErrorTitle"                 = "error de red";
+"networkconnectionMsg"              = "requiere acceso a la red a través de Wi-Fi o datos celulares. Comprueba tu conexión de red y vuelve a intentarlo más tarde.";
+"currentLocationText"               = "Ubicación actual";
+"defaultLocationText"               = "Default Location";
+"cacheLocationText"                 = "Ubicación del caché";
+"multipleLocHeaderText"             = "¿Querías decir?";
+"goText"                            = "Encontrar";
+"gpsErrorTitle"                     = "Error de inicio de sesión";
+"gpsAeroplaneModeMsg"               = "Compruebe su conexión de red o que no esté en modo avión";
+"gpsErrorMsg"                       = "Intente después de algún tiempo";
+"enterLocEmptyMsg"                  = "Introduzca la ubicación";
+"locServiceDisabledMsg"             = "Servicio de ubicación deshabilitado";
+"gpsDisabledMsg"                    = "Para volver a activarlo, vaya a Configuración y active el servicio de ubicación";
+"gatheringLocInfoHudTitle"          = "Recopilación de información de ubicación";
+"errorCodeTitle"                    = "Código de error: ";
+"doneBtnTitle"                      = "Hecho";

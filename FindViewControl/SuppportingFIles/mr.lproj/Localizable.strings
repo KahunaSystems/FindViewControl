@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  FindViewControl
+
+  Created by Krutika Mac Mini on 3/10/17.
+  Copyright © 2017 Kahuna. All rights reserved.
+*/
+
+"useCurrentLocation"    = "वर्तमान स्थान वापरा";
+"filtersNavTitle"    = "फिल्टर";
+"selectAllButtonTitle"    = "सर्व निवडा";
+"unselectAllButtonTitle"    = "सर्व निवड रद्द करा";
+"noPlacesFoundTitle"    = "कोणतीही ठिकाणे आढळली नाहीत.";
+"unableFindPlacesTitle"    = "ठिकाणी प्राप्त करण्यात अक्षम. कृपया पुन्हा प्रयत्न करा.";
+"OKButtonLabel"         = "ठीक आहे";
+"CancelButtonLabel"     = "कॅन्सल﻿";
+"networkErrorTitle"                 = "नेटवर्क त्रुटी";
+"networkconnectionMsg"              =  "ला Wi-Fi किंवा सेल्युलर डेटा द्वारे नेटवर्क प्रवेश आवश्यक आहे. आपले नेटवर्क कनेक्शन तपासा आणि नंतर पुन्हा प्रयत्न करा.";
+"currentLocationText"                       = "वर्तमान स्थान";
+"defaultLocationText"                       = "डिफॉल्ट स्थान";
+"cacheLocationText"                         = "कॅशे स्थान";
+"multipleLocHeaderText"                     = "याचा अर्थ असा आहे का?";
+"goText"                                    = "शोधणे";
+"gpsErrorTitle"                     = "वर्तमान स्थान माहिती मिळवण्यास असमर्थ";
+"gpsAeroplaneModeMsg"               = "कृपया आपले नेटवर्क कनेक्शन तपासा किंवा आपण विमान मोडमध्ये नाहीत";
+"gpsErrorMsg"                       = "काही वेळानंतर प्रयत्न करा";
+"enterLocEmptyMsg"                  = "कृपया स्थान प्रविष्ट करा";
+"locServiceDisabledMsg"             = "स्थान सेवा बंद";
+"gpsDisabledMsg"                    = "पुन्हा-सुरु करण्यासाठी,कृपया सेटिंग्ज वर जा आणि स्थान सेवा चालू करा";
+"gatheringLocInfoHudTitle"          = "स्थान माहिती गोळा करीत आहे";
+"errorCodeTitle" = "त्रुटी कोड: ";
+"doneBtnTitleChangePassword"        = "पूर्ण झाले";

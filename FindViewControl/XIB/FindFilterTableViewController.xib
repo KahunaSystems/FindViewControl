@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewController storyboardIdentifier="FindFilterTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QrU-r7-MLd" customClass="FindFilterTableViewController" customModule="FindViewControl" customModuleProvider="target">
+            <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="1" sectionFooterHeight="1" id="L6P-RL-Qcc">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <connections>
+                    <outlet property="dataSource" destination="QrU-r7-MLd" id="myG-sa-i3d"/>
+                    <outlet property="delegate" destination="QrU-r7-MLd" id="p0V-1F-M8U"/>
+                </connections>
+            </tableView>
+            <toolbarItems>
+                <barButtonItem title="Select All" id="1J2-Vg-XSg">
+                    <connections>
+                        <action selector="selectAllClicked" destination="QrU-r7-MLd" id="Irw-wI-UFG"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="as3-Cj-ma2"/>
+                <barButtonItem title="Unselect All" id="dAW-jx-Cy5">
+                    <connections>
+                        <action selector="unselectAllClicked" destination="QrU-r7-MLd" id="wpp-cF-xkg"/>
+                    </connections>
+                </barButtonItem>
+            </toolbarItems>
+            <navigationItem key="navigationItem" id="ogC-3T-s6y">
+                <nil key="title"/>
+                <barButtonItem key="leftBarButtonItem" id="a0K-mv-GtV">
+                    <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="M7w-bQ-Igu">
+                        <rect key="frame" x="16" y="5" width="71" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" title="Cancel">
+                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="cancel_button_clicked" destination="QrU-r7-MLd" eventType="touchUpInside" id="yD2-62-B3t"/>
+                        </connections>
+                    </button>
+                </barButtonItem>
+                <view key="titleView" contentMode="scaleToFill" id="Yb3-lc-GuJ">
+                    <rect key="frame" x="168" y="6" width="39" height="33"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Filters" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1dJ-tM-hXb">
+                            <rect key="frame" x="-6" y="5" width="144" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <barButtonItem key="rightBarButtonItem" id="iMB-bX-e0D">
+                    <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dZa-f2-f1l">
+                        <rect key="frame" x="288" y="5" width="71" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <state key="normal" title="Done">
+                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="done_button_clicked" destination="QrU-r7-MLd" eventType="touchUpInside" id="xpb-Ek-ytX"/>
+                        </connections>
+                    </button>
+                </barButtonItem>
+            </navigationItem>
+            <nil key="simulatedTopBarMetrics"/>
+            <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+            <connections>
+                <outlet property="barButtonItem" destination="a0K-mv-GtV" id="bgL-G8-Gbh"/>
+                <outlet property="barButtonItem1" destination="iMB-bX-e0D" id="ocr-Rb-1g8"/>
+                <outlet property="navTitleLabel" destination="1dJ-tM-hXb" id="t9J-dh-GbH"/>
+                <outlet property="selectAll" destination="1J2-Vg-XSg" id="lp4-YG-0GM"/>
+                <outlet property="unselectAll" destination="dAW-jx-Cy5" id="ovK-lP-DcJ"/>
+            </connections>
+            <point key="canvasLocation" x="-278" y="1206"/>
+        </tableViewController>
+    </objects>
+</document>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="50" id="WPy-zn-K9s">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WPy-zn-K9s" id="H9t-fc-9oE">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eAx-3J-wbI">
+                        <rect key="frame" x="20" y="14" width="190" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="IWi-wF-ILU"/>
+                            <constraint firstAttribute="width" constant="190" id="wfo-ns-DeN"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tick.png" translatesAutoresizingMaskIntoConstraints="NO" id="u8x-j5-W9G">
+                        <rect key="frame" x="220" y="16" width="17" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="7v1-uT-ADc"/>
+                            <constraint firstAttribute="width" constant="17" id="jdn-9a-xzn"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="10000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YQ1-GH-SDQ">
+                        <rect key="frame" x="0.0" y="48" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="eGa-iI-Ybb"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="YQ1-GH-SDQ" firstAttribute="leading" secondItem="H9t-fc-9oE" secondAttribute="leading" id="Siq-ie-u6S"/>
+                    <constraint firstAttribute="bottom" secondItem="YQ1-GH-SDQ" secondAttribute="bottom" id="ZBr-np-GOM"/>
+                    <constraint firstItem="u8x-j5-W9G" firstAttribute="top" secondItem="H9t-fc-9oE" secondAttribute="top" constant="16" id="Zjt-TL-ql2"/>
+                    <constraint firstItem="u8x-j5-W9G" firstAttribute="leading" secondItem="eAx-3J-wbI" secondAttribute="trailing" constant="10" id="iIt-2g-wCf"/>
+                    <constraint firstItem="eAx-3J-wbI" firstAttribute="leading" secondItem="H9t-fc-9oE" secondAttribute="leading" constant="20" id="khg-1D-USl"/>
+                    <constraint firstItem="eAx-3J-wbI" firstAttribute="top" secondItem="H9t-fc-9oE" secondAttribute="top" constant="14" id="mDa-iw-fh6"/>
+                    <constraint firstAttribute="trailing" secondItem="YQ1-GH-SDQ" secondAttribute="trailing" id="mkS-Fk-X15"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <point key="canvasLocation" x="26.5" y="52"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="tick.png" width="60" height="60"/>
+    </resources>
+</document>

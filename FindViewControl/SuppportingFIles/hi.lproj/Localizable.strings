@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  FindViewControl
+
+  Created by Krutika Mac Mini on 3/10/17.
+  Copyright © 2017 Kahuna. All rights reserved.
+*/
+
+"useCurrentLocation"    = "वर्तमान स्थान का प्रयोग करें";
+"filtersNavTitle"    = "फिल्टर";
+"selectAllButtonTitle"    = "सभी का चयन करे";
+"unselectAllButtonTitle"    = "सभी का चयन रद्द";
+"noPlacesFoundTitle"    = "कोई स्थान नहीं मिला।";
+"unableFindPlacesTitle"    = "स्थानों प्राप्त करने में असमर्थ है। कृपया पुन: प्रयास करें।";
+"OKButtonLabel"         = "ठीक है";
+"CancelButtonLabel"     = "कॅन्सल";
+"networkErrorTitle"                 = "नेटवर्क त्रुटि";
+"networkconnectionMsg"             = "को Wi-Fi या सेलुलर डेटा के माध्यम से नेटवर्क के उपयोग की आवश्यकता है। अपने नेटवर्क कनेक्शन की जाँच करें और बाद में फिर कोशिश करें।";
+"currentLocationText"                       = "वर्तमान स्थान";
+"defaultLocationText"                       = "डिफ़ॉल्ट स्थान";
+"cacheLocationText"                         = "कैश स्थान";
+"multipleLocHeaderText"                     = "आपका मतलब है?";
+"goText"                                    = "खोज";
+"gpsErrorTitle"                     = "वर्तमान स्थान के बारे में जानकारी प्राप्त करने में असमर्थ";
+"gpsAeroplaneModeMsg"               = "कृपया अपने नेटवर्क कनेक्शन की जाँच करें या जाँच करें कि आप हवाई जहाज मोड में नहीं हैं";
+"gpsErrorMsg"                       = "कुछ समय के बाद कोशिश करें";
+"enterLocEmptyMsg"                  = "स्थान दर्ज करें";
+"locServiceDisabledMsg"             = "स्थान सेवा बंद है।";
+"gpsDisabledMsg"                    =  "पुन: सक्षम करने के लिए, कृपया सेटिंग्स में जाएँ और के लिए स्थान सेवा चालू करें।";
+"gatheringLocInfoHudTitle"          =  "स्थान की जानकारी एकत्र कर रहे है";
+"errorCodeTitle" = "त्रुटि कोड: ";
+"doneBtnTitleChangePassword"        = "डन";
