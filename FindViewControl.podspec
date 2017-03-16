@@ -14,5 +14,6 @@ s.requires_arc = true
 s.dependency 'MFSideMenu'
   s.dependency 'MBProgressHUD', '~> 0.9.2'
   s.dependency 'Alamofire', '~> 4.3'
+  s.dependency 'GoogleMaps'
 end
 
