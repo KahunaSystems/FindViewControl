@@ -16,6 +16,13 @@ pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :
 
 ## Add FindViewControl To Project
 
+### Initial Setup:
+You need to add GoogleMaps framework manually, for that go to "Pods" project, select target "FindViewControl" goto Build Phases in "Link Binary With Libraries" add GoogleMaps.framework from project. Also in Build Settings in "Framework Search Paths" please verify the below two paths are added for both debug & release:-
+```ruby
+"${PODS_ROOT}/GoogleMaps/Base/Frameworks"
+"${PODS_ROOT}/GoogleMaps/Maps/Frameworks"
+```
+
 ### Swift Code:
 
 ```swift
@@ -34,7 +41,7 @@ pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :
         fobj1.filterValue = "gas_station"
         pickerArray.append(fobj1)
 
-\\ Init Find Control
+// Init Find Control
 
  _ =  FindControl.init(viewController: self,googleAPIKey: "AIzXXXXXXXXXXXXXXXXXX8sk",useGooglePlaces: true, filterArray: pickerArray, gisURL: "GIS validation URl", googlePlacesKey: "AIzaXXXXXXXXXXXXXXXXXXFFMc", defaultLattitude: 34.052235, defaultLongitude: -118.243683, defaultAddress: "test")
  
