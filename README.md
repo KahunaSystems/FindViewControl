@@ -1,31 +1,42 @@
-## Synopsis
+# FindViewControl
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+![LogCamp](http://www.kahuna-mobihub.com/templates/ja_puresite/images/logo-trans.png)
 
-## Code Example
-
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
-
-## Motivation
-
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+FindViewControl is written in Swift
 
 ## Installation
 
-Provide code examples and explanations of how to get the project.
+### CocoaPods
 
-## API Reference
+[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. 
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+```ruby
+pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :tag => '1.0.10'
+```
 
-## Tests
+## Add FindViewControl To Project
 
-Describe and show how to run the tests with code examples.
+### Swift Code:
 
-## Contributors
+```swift
+(Add this code in viewdid load for viewcontroller)
+// Initialize Picker for filter
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+      pickerArray = [FilterObject]()
+        
+        let fobj = FilterObject()
+        fobj.filterID = "fire_station"
+        fobj.filterValue = "FireStation"
+        pickerArray.append(fobj)
+        
+        let fobj1 = FilterObject()
+        fobj1.filterID = "gas_station"
+        fobj1.filterValue = "gas_station"
+        pickerArray.append(fobj1)
 
-## License
+\\ Init Find Control
 
-A short snippet describing the license (MIT, Apache, etc.)
+ _ =  FindControl.init(viewController: self,googleAPIKey: "AIzXXXXXXXXXXXXXXXXXX8sk",useGooglePlaces: true, filterArray: pickerArray, gisURL: "GIS validation URl", googlePlacesKey: "AIzaXXXXXXXXXXXXXXXXXXFFMc", defaultLattitude: 34.052235, defaultLongitude: -118.243683, defaultAddress: "test")
+ 
+```
+
