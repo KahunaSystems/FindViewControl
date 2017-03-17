@@ -22,7 +22,7 @@ pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :
 (Add this code in viewdidload for viewcontroller)
 // Initialize Picker for filter
 
-      pickerArray = [FilterObject]()
+      let pickerArray = [FilterObject]()
         
         let fobj = FilterObject()
         fobj.filterID = "fire_station"
