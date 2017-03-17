@@ -19,7 +19,7 @@ pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :
 ### Swift Code:
 
 ```swift
-(Add this code in viewdid load for viewcontroller)
+(Add this code in viewdidload for viewcontroller)
 // Initialize Picker for filter
 
       pickerArray = [FilterObject]()
