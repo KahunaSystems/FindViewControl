@@ -10,7 +10,7 @@ import UIKit
 import GoogleMaps
 import MBProgressHUD
 
-class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelegate, GMSMapViewDelegate, HTTPRequestDelegate, FindMultipleLocationViewControllerDelegate {
+class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelegate, GMSMapViewDelegate, FindHTTPRequestDelegate, FindMultipleLocationViewControllerDelegate {
     var parentViewController: UIViewController?
     var filterArray: [FilterObject]!
     @IBOutlet weak var searchTextField: UITextField!
@@ -198,7 +198,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         self.mapView.camera = position
         markerIndex = 0
         self.searchTextField.text = address
-        if self.selectedFiltersArray.count > 0 && CheckConnectivitySwift.hasConnectivity() {
+        if self.selectedFiltersArray.count > 0 && FindCheckConnectivitySwift.hasConnectivity() {
             if self.useGooglePlaces == true {
                 self.perform(#selector(self.queryGooglePlaces), with: "", afterDelay: 0.1)
             }
@@ -224,7 +224,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         }
 
         self.searchTextField.resignFirstResponder()
-        if(CheckConnectivitySwift.hasConnectivity()) {
+        if(FindCheckConnectivitySwift.hasConnectivity()) {
             if (CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied) {
                 if(!self.isInitialLoading) {
                     self.isInitialLoading = false
@@ -235,7 +235,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
                 //self.searchTextField.text = ""
                 let hud = MBProgressHUD.showAdded(to: self, animated: true)
                 hud?.labelText = "gatheringLocInfoHudTitle".localized
-                PSLocationManager.shared().startLocationUpdates()
+                FindPSLocationManager.shared().startLocationUpdates()
                 self.isUseCurrentLocationClicked = true
             }
         }
@@ -266,7 +266,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
     func locationFound(notify: NSNotification) {
 
-        PSLocationManager.shared().stopLocationUpdates()
+        FindPSLocationManager.shared().stopLocationUpdates()
         if self.isUseCurrentLocationClicked == true {
             self.isUseCurrentLocationClicked = false
             var isError = false
@@ -285,7 +285,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             }
             if isError == false {
                 MBProgressHUD.hideAllHUDs(for: self, animated: true)
-                let currentLocation = PSLocationManager.shared().currentLocation
+                let currentLocation = FindPSLocationManager.shared().currentLocation
                 self.selectedLocation = ""
                 self.selectedLocationInfoDict = nil
                 let position = CLLocationCoordinate2DMake((currentLocation?.coordinate.latitude)!, (currentLocation?.coordinate.longitude)!)
@@ -368,7 +368,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
     func searchLocationAddress(address: String) {
 
-        if(CheckConnectivitySwift.hasConnectivity()) {
+        if(FindCheckConnectivitySwift.hasConnectivity()) {
             MBProgressHUD.showAdded(to: self, animated: true)
             self.selectedLocation = ""
             self.serviceRequestType = FindConstants.pinDragDropViewConstants.serviceReqTypeGeoAddress
@@ -399,7 +399,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     }
 
     func callForCoOrdinateLocation(location: CLLocationCoordinate2D) {
-        if(CheckConnectivitySwift.hasConnectivity()) {
+        if(FindCheckConnectivitySwift.hasConnectivity()) {
             let hud = MBProgressHUD.showAdded(to: self, animated: true)
             hud?.labelText = "gatheringLocInfoHudTitle".localized
             let location = location
@@ -425,7 +425,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     func callForAddressLocation(addressString: String) {
 
         self.searchTextField.resignFirstResponder()
-        if(CheckConnectivitySwift.hasConnectivity()) {
+        if(FindCheckConnectivitySwift.hasConnectivity()) {
             let hud = MBProgressHUD.showAdded(to: self, animated: true)
             hud?.labelText = "gatheringLocInfoHudTitle".localized
             // call GIS service for address
@@ -447,7 +447,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
      */
 
     func getDisplayLocationInfoForCoOrdinate(Location: CLLocationCoordinate2D) {
-        if CheckConnectivitySwift.hasConnectivity() {
+        if FindCheckConnectivitySwift.hasConnectivity() {
             // call coordinate search service
             let coOrdinateRequestObj = GISAddressSearchRequest()
             coOrdinateRequestObj.latitude = Float(Location.latitude)
@@ -479,7 +479,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
      call GIS service for address when user enters address in search field
      */
     func getDisplayLocationInfoForAddress(address: String) {
-        if CheckConnectivitySwift.hasConnectivity() {
+        if FindCheckConnectivitySwift.hasConnectivity() {
             // call coordinate search service
             let addressRequestObj = GISAddressSearchRequest()
             addressRequestObj.address = address
@@ -582,7 +582,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         let escapedString = url.addingPercentEncoding(withAllowedCharacters: customAllowedSet)
         print("URL : \(escapedString)")
 
-        if(CheckConnectivitySwift.hasConnectivity()) {
+        if(FindCheckConnectivitySwift.hasConnectivity()) {
             if let googleRequestURL = NSURL(string: escapedString!) {
 
                 if let data = NSData(contentsOf: googleRequestURL as URL) {
@@ -657,7 +657,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
         if isQueryComplete == true {
             isQueryComplete = false
-            if(CheckConnectivitySwift.hasConnectivity()) {
+            if(FindCheckConnectivitySwift.hasConnectivity()) {
                 self.addPlacesMarker()
             }
                 else {
@@ -689,7 +689,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
             markerOptions1.infoWindowAnchor = CGPoint(x: 0.5, y: 0.25)
             markerOptions1.groundAnchor = CGPoint(x: 0.5, y: 1.0)
-
             markerOptions1.accessibilityLabel = String(format: "%d", markerIndex)
             markerOptions1.map = self.mapView
             markerIndex = markerIndex + 1
@@ -706,7 +705,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         self.endEditing(true)
         if marker != self.currentLocationMarker {
             if self.placesArray.count > Int(marker.accessibilityLabel!)! {
-                if prevSelectedMarker != nil && self.selectedPlace != nil{
+                if prevSelectedMarker != nil && self.selectedPlace != nil {
                     if(self.selectedPlace.icon != nil && self.selectedPlace.icon.characters.count > 0) {
                         let url = NSURL(string: self.selectedPlace.icon)
                         let data = NSData(contentsOf: url! as URL)
@@ -814,18 +813,18 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     //Mark: fetch address from co-ordinates
     func getMatchesForCurrentLocation(coOrdinateSearchReq: GISAddressSearchRequest) {
         let requestParameters = coOrdinateSearchReq.toDictionary()
-        let requestHandler = HTTPRequest.sharedInstance
+        let requestHandler = FindHTTPRequest.sharedInstance
         requestHandler.delegate = self
         requestHandler.sendRequestAtPath(gisURL, withParameters: requestParameters as? [String: AnyObject], timeoutInterval: Constants.TimeOutIntervals.kSRTimeoutInterval)
     }
 
     // MARK: -  CONFIRMING HTTP REQUEST DELEGATE
-    func httpRequest(_ requestHandler: HTTPRequest, requestCompletedWithResponseJsonObject jsonObject: AnyObject, forPath path: String) {
+    func httpRequest(_ requestHandler: FindHTTPRequest, requestCompletedWithResponseJsonObject jsonObject: AnyObject, forPath path: String) {
         self.handleGISResponse(jsonObject: jsonObject)
 
     }
 
-    func httpRequest(_ requestHandler: HTTPRequest, requestFailedWithError failureError: Error, forPath path: String) {
+    func httpRequest(_ requestHandler: FindHTTPRequest, requestFailedWithError failureError: Error, forPath path: String) {
 
         MBProgressHUD.hideAllHUDs(for: self, animated: true)
         let intCode = failureError._code
