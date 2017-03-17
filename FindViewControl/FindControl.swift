@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import GoogleMaps
 
 public class FindControl {
 
@@ -15,8 +14,7 @@ public class FindControl {
     var viewController: UIViewController!
     
     public init(viewController: UIViewController, useGooglePlaces: Bool, filterArray: [FilterObject], gisURL: String, googlePlacesKey: String, defaultLattitude: Double, defaultLongitude: Double, defaultAddress: String) {
-        GMSServices.provideAPIKey("AIzaSyDo2obIE2Y4Gk9fTphsqc2mO5huESnb8sk")
-        let frameworkBundleId = "com.kahuna.FindViewControl"
+        let frameworkBundleId = "org.cocoapods.FindViewControl"
         let bundle = Bundle(identifier: frameworkBundleId)
         findView = bundle?.loadNibNamed("FindView", owner: viewController, options: nil)![0] as! FindView
         findView.frame = viewController.view.frame

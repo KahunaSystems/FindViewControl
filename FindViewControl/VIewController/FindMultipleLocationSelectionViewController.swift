@@ -51,7 +51,7 @@ class FindMultipleLocationSelectionViewController: UIViewController, UITableView
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell? = self.locationTableView.dequeueReusableCell(withIdentifier: "addressCell")
-        let frameworkBundleId = "com.kahuna.FindViewControl"
+        let frameworkBundleId = "org.cocoapods.FindViewControl"
         let bundle = Bundle(identifier: frameworkBundleId)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: "addressCell")

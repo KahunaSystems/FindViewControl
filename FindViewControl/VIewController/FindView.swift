@@ -10,7 +10,7 @@ import UIKit
 import GoogleMaps
 import MBProgressHUD
 
-class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelegate, GMSMapViewDelegate, FindHTTPRequestDelegate, FindMultipleLocationViewControllerDelegate {
+class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelegate, GMSMapViewDelegate, HTTPRequestDelegate, FindMultipleLocationViewControllerDelegate {
     var parentViewController: UIViewController?
     var filterArray: [FilterObject]!
     @IBOutlet weak var searchTextField: UITextField!
@@ -198,7 +198,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         self.mapView.camera = position
         markerIndex = 0
         self.searchTextField.text = address
-        if self.selectedFiltersArray.count > 0 && FindCheckConnectivitySwift.hasConnectivity() {
+        if self.selectedFiltersArray.count > 0 && CheckConnectivitySwift.hasConnectivity() {
             if self.useGooglePlaces == true {
                 self.perform(#selector(self.queryGooglePlaces), with: "", afterDelay: 0.1)
             }
@@ -224,7 +224,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         }
 
         self.searchTextField.resignFirstResponder()
-        if(FindCheckConnectivitySwift.hasConnectivity()) {
+        if(CheckConnectivitySwift.hasConnectivity()) {
             if (CLLocationManager.locationServicesEnabled() == false || CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied) {
                 if(!self.isInitialLoading) {
                     self.isInitialLoading = false
@@ -235,7 +235,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
                 //self.searchTextField.text = ""
                 let hud = MBProgressHUD.showAdded(to: self, animated: true)
                 hud?.labelText = "gatheringLocInfoHudTitle".localized
-                FindPSLocationManager.shared().startLocationUpdates()
+                PSLocationManager.shared().startLocationUpdates()
                 self.isUseCurrentLocationClicked = true
             }
         }
@@ -266,7 +266,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
     func locationFound(notify: NSNotification) {
 
-        FindPSLocationManager.shared().stopLocationUpdates()
+        PSLocationManager.shared().stopLocationUpdates()
         if self.isUseCurrentLocationClicked == true {
             self.isUseCurrentLocationClicked = false
             var isError = false
@@ -285,7 +285,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             }
             if isError == false {
                 MBProgressHUD.hideAllHUDs(for: self, animated: true)
-                let currentLocation = FindPSLocationManager.shared().currentLocation
+                let currentLocation = PSLocationManager.shared().currentLocation
                 self.selectedLocation = ""
                 self.selectedLocationInfoDict = nil
                 let position = CLLocationCoordinate2DMake((currentLocation?.coordinate.latitude)!, (currentLocation?.coordinate.longitude)!)
@@ -368,7 +368,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
     func searchLocationAddress(address: String) {
 
-        if(FindCheckConnectivitySwift.hasConnectivity()) {
+        if(CheckConnectivitySwift.hasConnectivity()) {
             MBProgressHUD.showAdded(to: self, animated: true)
             self.selectedLocation = ""
             self.serviceRequestType = FindConstants.pinDragDropViewConstants.serviceReqTypeGeoAddress
@@ -399,7 +399,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     }
 
     func callForCoOrdinateLocation(location: CLLocationCoordinate2D) {
-        if(FindCheckConnectivitySwift.hasConnectivity()) {
+        if(CheckConnectivitySwift.hasConnectivity()) {
             let hud = MBProgressHUD.showAdded(to: self, animated: true)
             hud?.labelText = "gatheringLocInfoHudTitle".localized
             let location = location
@@ -425,7 +425,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     func callForAddressLocation(addressString: String) {
 
         self.searchTextField.resignFirstResponder()
-        if(FindCheckConnectivitySwift.hasConnectivity()) {
+        if(CheckConnectivitySwift.hasConnectivity()) {
             let hud = MBProgressHUD.showAdded(to: self, animated: true)
             hud?.labelText = "gatheringLocInfoHudTitle".localized
             // call GIS service for address
@@ -447,7 +447,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
      */
 
     func getDisplayLocationInfoForCoOrdinate(Location: CLLocationCoordinate2D) {
-        if FindCheckConnectivitySwift.hasConnectivity() {
+        if CheckConnectivitySwift.hasConnectivity() {
             // call coordinate search service
             let coOrdinateRequestObj = GISAddressSearchRequest()
             coOrdinateRequestObj.latitude = Float(Location.latitude)
@@ -479,7 +479,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
      call GIS service for address when user enters address in search field
      */
     func getDisplayLocationInfoForAddress(address: String) {
-        if FindCheckConnectivitySwift.hasConnectivity() {
+        if CheckConnectivitySwift.hasConnectivity() {
             // call coordinate search service
             let addressRequestObj = GISAddressSearchRequest()
             addressRequestObj.address = address
@@ -499,7 +499,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     // MARK:- Filter Button action
     @IBAction func filtersButton_Clicked() {
         if parentViewController?.menuContainerViewController != nil {
-            let frameworkBundleId = "com.kahuna.FindViewControl"
+            let frameworkBundleId = "org.cocoapods.FindViewControl"
             let bundle = Bundle(identifier: frameworkBundleId)
             let viewController = bundle?.loadNibNamed("FindFilterTableViewController", owner: self, options: nil)![0] as! FindFilterTableViewController
             viewController.selectedFiltersArray = [FilterObject]()
@@ -582,7 +582,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         let escapedString = url.addingPercentEncoding(withAllowedCharacters: customAllowedSet)
         print("URL : \(escapedString)")
 
-        if(FindCheckConnectivitySwift.hasConnectivity()) {
+        if(CheckConnectivitySwift.hasConnectivity()) {
             if let googleRequestURL = NSURL(string: escapedString!) {
 
                 if let data = NSData(contentsOf: googleRequestURL as URL) {
@@ -657,7 +657,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
         if isQueryComplete == true {
             isQueryComplete = false
-            if(FindCheckConnectivitySwift.hasConnectivity()) {
+            if(CheckConnectivitySwift.hasConnectivity()) {
                 self.addPlacesMarker()
             }
                 else {
@@ -676,9 +676,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         markerIndex = 0
         self.mapView.clear()
         self.currentLocationMarker.map = self.mapView
-        var bounds = GMSCoordinateBounds()
-        self.currentLocationMarker.map = self.mapView
-        bounds = bounds.includingCoordinate(self.currentLocationMarker.position)
 
         for placeObj in placesArray {
             let markerOptions1 = GMSMarker()
@@ -693,31 +690,11 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             markerOptions1.infoWindowAnchor = CGPoint(x: 0.5, y: 0.25)
             markerOptions1.groundAnchor = CGPoint(x: 0.5, y: 1.0)
 
-            /*      if placeObj.name != nil {
-                var titleStr = placeObj.name.capitalized
-
-                if placeObj.name.characters.count > 20
-                {
-                    titleStr = (placeObj.name as NSString).substring(to: 20).capitalized
-                    titleStr = titleStr.appending("...")
-                }
-
-                let charCode = UInt32("000027A1", radix: 16)
-                let str: String? = String(describing: UnicodeScalar(charCode!))
-                markerOptions1.title = String(format: "%@ \(str!)", titleStr)
-
-            }
-                else {
-                markerOptions1.title = "N/A"
-            } */
-
             markerOptions1.accessibilityLabel = String(format: "%d", markerIndex)
             markerOptions1.map = self.mapView
             markerIndex = markerIndex + 1
-            bounds = bounds.includingCoordinate(markerOptions1.position)
         }
         self.setMapCenter()
-        self.mapView.animate(with: GMSCameraUpdate.fit(bounds))
     }
 
     //MARK:- GMSMapView delegate
@@ -748,7 +725,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
                 if infoWindowView != nil {
                     infoWindowView.removeFromSuperview()
                 }
-                let frameworkBundleId = "com.kahuna.FindViewControl"
+                let frameworkBundleId = "org.cocoapods.FindViewControl"
                 let bundle = Bundle(identifier: frameworkBundleId)
                 infoWindowView = bundle?.loadNibNamed("InfoWindowView", owner: self, options: nil)![0] as? InfoWindowView
                 infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height - 100, width: self.frame.size.width, height: 100)
@@ -837,18 +814,18 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     //Mark: fetch address from co-ordinates
     func getMatchesForCurrentLocation(coOrdinateSearchReq: GISAddressSearchRequest) {
         let requestParameters = coOrdinateSearchReq.toDictionary()
-        let requestHandler = FindHTTPRequest.sharedInstance
+        let requestHandler = HTTPRequest.sharedInstance
         requestHandler.delegate = self
         requestHandler.sendRequestAtPath(gisURL, withParameters: requestParameters as? [String: AnyObject], timeoutInterval: Constants.TimeOutIntervals.kSRTimeoutInterval)
     }
 
     // MARK: -  CONFIRMING HTTP REQUEST DELEGATE
-    func httpRequest(_ requestHandler: FindHTTPRequest, requestCompletedWithResponseJsonObject jsonObject: AnyObject, forPath path: String) {
+    func httpRequest(_ requestHandler: HTTPRequest, requestCompletedWithResponseJsonObject jsonObject: AnyObject, forPath path: String) {
         self.handleGISResponse(jsonObject: jsonObject)
 
     }
 
-    func httpRequest(_ requestHandler: FindHTTPRequest, requestFailedWithError failureError: Error, forPath path: String) {
+    func httpRequest(_ requestHandler: HTTPRequest, requestFailedWithError failureError: Error, forPath path: String) {
 
         MBProgressHUD.hideAllHUDs(for: self, animated: true)
         let intCode = failureError._code
@@ -886,7 +863,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             if((resultsArray?.count)! > 0) {
                 self.gisAddressResultArray = NSMutableArray(array: resultsArray!)
                 if((resultsArray?.count)! > 1) {
-                    let frameworkBundleId = "com.kahuna.FindViewControl"
+                    let frameworkBundleId = "org.cocoapods.FindViewControl"
                     let bundle = Bundle(identifier: frameworkBundleId)
                     let multipleLocationObj = bundle?.loadNibNamed("FindMultipleLocationSelectionViewController", owner: self, options: nil)![0] as! FindMultipleLocationSelectionViewController
                     multipleLocationObj.setLocaArray(locArray: self.gisAddressResultArray)
@@ -947,7 +924,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
 extension String {
     var localized: String {
-        let frameworkBundleId = "com.kahuna.FindViewControl"
+        let frameworkBundleId = "org.cocoapods.FindViewControl"
         let bundle = Bundle(identifier: frameworkBundleId)
         return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
     }
