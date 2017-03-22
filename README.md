@@ -11,9 +11,14 @@ FindViewControl is written in Swift
 [CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects. 
 
 ```ruby
-pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :tag => '1.0.10'
+pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :tag => '1.0.12'
 ```
-
+Also, add below code at the end of the pod file
+```ruby
+pre_install do |installer|
+    def installer.verify_no_static_framework_transitive_dependencies; end
+end
+```
 ## Add FindViewControl To Project
 
 ### Initial Setup:
