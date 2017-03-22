@@ -31,7 +31,7 @@ You need to add GoogleMaps framework manually, for that go to "Pods" project, se
 ### Swift Code to plot places From Places API:
 
 ```swift
-(Add this code in viewdidload for viewcontroller)
+(Add this code in viewdidload of viewcontroller)
 // Initialize Picker for filter
 
       let pickerArray = [FilterObject]()
@@ -57,7 +57,7 @@ Add DB with name "NearBy.sqlite" that contains places list. Also, add markers wi
 
 
 ```swift
-(Add this code in viewdidload for viewcontroller)
+(Add this code in viewdidload of viewcontroller)
 // Init Find Control
 
  _ =  FindControl.init(viewController: self, googleAPIKey: "AIzXXXXXXXXXXXXXXXXXX8sk", useGooglePlaces: flase, filterArray: [FilterObject](), gisURL: "GIS validation URl", googlePlacesKey: "", defaultLattitude: 34.052235, defaultLongitude: -118.243683, defaultAddress: "test", individualMarkersCount: 4)
