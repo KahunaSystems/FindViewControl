@@ -11,6 +11,7 @@ import UIKit
 
 struct FindConstants {
 
+    static let findBundleID = "org.cocoapods.FindViewControl"
     enum pinDragDropViewConstants {
 
         static let kCurrentLocationPinType = "Current Location"

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "FindViewControl"
-  s.version      = "1.0.11"
+  s.version      = "1.0.12"
   s.summary      = "FindViewControl for Find implementation"
   s.description  = "FindViewControl for plotting nearby places based on location"
   s.homepage     = "https://github.com/Kruks/FindViewControl/blob/master/README.md"

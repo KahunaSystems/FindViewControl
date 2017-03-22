@@ -15,5 +15,6 @@ class NearByInfo: NSObject {
     var nearLocationType: String!
     var nearAddress: String!
     var nearLong: String!
+    var distance: Double!
     
 }

@@ -14,5 +14,6 @@ class InfoWindowView: UIView {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var getDirectionsButton: UIButton!
+    @IBOutlet weak var markerIcon: UIImageView!
 
 }

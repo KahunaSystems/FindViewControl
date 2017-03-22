@@ -31,7 +31,8 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     var pinLocationType: String!
     var selectedFiltersArray: [FilterObject]!
     var markerIndex: Int! = 0
-    var radiusOfEarth: Double = 6371
+    let radiusOfEarth: Double = 6371
+    let conversionKmToMiles: Double = 0.621371192
     let searchRadius: Double = 1000
     var placesArray: [PlacesObject]! = [PlacesObject]()
     var selectedPlace: PlacesObject!
@@ -41,6 +42,9 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     var defaultAddress: String!
     var isInitialCall: Bool!
     var prevSelectedMarker: GMSMarker!
+    var nearbyPlacesArray: [NearByInfo]! = [NearByInfo]()
+    var selectedNearbyPlace: NearByInfo!
+    var individualMarkersCount: Int!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -56,6 +60,11 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     override func layoutSubviews() {
         if isInitialCall == true {
             isInitialCall = false
+            if useGooglePlaces == false {
+                filterArray = [FilterObject]()
+                filterArray = FindHandler().filterTypesFromDatabase()
+            }
+
             NotificationCenter.default.addObserver(self, selector: #selector(locationFound(notify:)), name: NSNotification.Name(rawValue: "LocationFound"), object: nil)
             self.goButton.setTitle("goText".localized, for: UIControlState.normal)
 
@@ -119,7 +128,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
 
     func addressStringForLocationType() -> (String) {
         var address = ""
-        print(self.pinLocationType)
         if(self.pinLocationType == FindConstants.pinDragDropViewConstants.kDefaultLocationType) {
             address = defaultAddress
 
@@ -202,6 +210,9 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             if self.useGooglePlaces == true {
                 self.perform(#selector(self.queryGooglePlaces), with: "", afterDelay: 0.1)
             }
+                else {
+                self.queryFromDB()
+            }
         }
     }
 
@@ -232,7 +243,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
                 }
             }
                 else {
-                //self.searchTextField.text = ""
                 let hud = MBProgressHUD.showAdded(to: self, animated: true)
                 hud?.labelText = "gatheringLocInfoHudTitle".localized
                 FindPSLocationManager.shared().startLocationUpdates()
@@ -429,7 +439,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             let hud = MBProgressHUD.showAdded(to: self, animated: true)
             hud?.labelText = "gatheringLocInfoHudTitle".localized
             // call GIS service for address
-            //let addressString = self.searchTextField.text! as String
             self.selectedLocation = ""
             self.serviceRequestType = FindConstants.pinDragDropViewConstants.serviceReqTypeGeoAddress
             self.getDisplayLocationInfoForAddress(address: addressString)
@@ -483,7 +492,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             // call coordinate search service
             let addressRequestObj = GISAddressSearchRequest()
             addressRequestObj.address = address
-            print(self.serviceRequestType)
             addressRequestObj.requestType = self.serviceRequestType
             self.getMatchesForCurrentLocation(coOrdinateSearchReq: addressRequestObj)
 
@@ -499,8 +507,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     // MARK:- Filter Button action
     @IBAction func filtersButton_Clicked() {
         if parentViewController?.menuContainerViewController != nil {
-            let frameworkBundleId = "org.cocoapods.FindViewControl"
-            let bundle = Bundle(identifier: frameworkBundleId)
+            let bundle = Bundle(identifier: FindConstants.findBundleID)
             let viewController = bundle?.loadNibNamed("FindFilterTableViewController", owner: self, options: nil)![0] as! FindFilterTableViewController
             viewController.selectedFiltersArray = [FilterObject]()
             viewController.selectedFiltersArray.append(contentsOf: selectedFiltersArray)
@@ -538,6 +545,9 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             if self.useGooglePlaces == true {
                 self.queryGooglePlaces(nextPageToken: "")
             }
+                else {
+                self.queryFromDB()
+            }
         }
             else {
             MBProgressHUD.hideAllHUDs(for: self, animated: true)
@@ -553,6 +563,50 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         let zoomLevel = self.mapView.camera.zoom
         let position = GMSCameraPosition.camera(withLatitude: self.currentLocationMarker.position.latitude, longitude: self.currentLocationMarker.position.longitude, zoom: zoomLevel)
         self.mapView.camera = position
+
+    }
+
+    func queryFromDB() {
+        var filterArr = [String]()
+        for filterObj in selectedFiltersArray {
+            filterArr.append(filterObj.filterID)
+        }
+        nearbyPlacesArray = FindHandler().getDatafromDB(searchType: filterArr, isAllCategories: false)
+        if selectedFiltersArray.count == self.filterArray.count {
+            self.sortArray()
+        }
+            else {
+            self.plotNearbyPlacesMarker()
+        }
+
+    }
+
+    func plotNearbyPlacesMarker() {
+        MBProgressHUD.hideAllHUDs(for: self, animated: true)
+        markerIndex = 0
+        self.mapView.clear()
+        self.currentLocationMarker.map = self.mapView
+        self.setMapCenter()
+        for placeObj in nearbyPlacesArray {
+            let markerOptions1 = GMSMarker()
+            markerOptions1.position = CLLocationCoordinate2DMake(Double(placeObj.nearLat)!, Double(placeObj.nearLong)!)
+            let imgName = "\(placeObj.nearLocationType!).png"
+            markerOptions1.icon = UIImage(named: imgName)
+
+            /*   let filePath = Bundle.main.path(forResource: imgName, ofType: nil)
+            if filePath != nil {
+                markerOptions1.icon = UIImage(named: imgName)
+            }
+            else {
+                let bundle = Bundle(identifier: FindConstants.findBundleID)
+                markerOptions1.icon =  UIImage(named: "other.png", in: bundle, compatibleWith: nil)
+            } */
+            markerOptions1.infoWindowAnchor = CGPoint(x: 0.5, y: 0.25)
+            markerOptions1.groundAnchor = CGPoint(x: 0.5, y: 1.0)
+            markerOptions1.accessibilityLabel = String(format: "%d", markerIndex)
+            markerOptions1.map = self.mapView
+            markerIndex = markerIndex + 1
+        }
 
     }
 
@@ -615,8 +669,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
         do {
             let jsonResult: NSDictionary! = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary
 
-            print("Places Response:- \(jsonResult)")
-
             if (jsonResult != nil) {
 
                 MBProgressHUD.hideAllHUDs(for: self, animated: true)
@@ -643,8 +695,6 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             }
         }
         catch {
-            print("Something went wrong!")
-
             if(placesArray.count > 0) {
                 isQueryComplete = true
             }
@@ -704,46 +754,108 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         self.endEditing(true)
         if marker != self.currentLocationMarker {
-            if self.placesArray.count > Int(marker.accessibilityLabel!)! {
-                if prevSelectedMarker != nil && self.selectedPlace != nil {
-                    if(self.selectedPlace.icon != nil && self.selectedPlace.icon.characters.count > 0) {
-                        let url = NSURL(string: self.selectedPlace.icon)
-                        let data = NSData(contentsOf: url! as URL)
-                        prevSelectedMarker.icon = UIImage(data: data! as Data, scale: 2.0)
-                    }
-
-                }
-
-                self.selectedPlace = self.placesArray[Int(marker.accessibilityLabel!)!]
-                if(self.selectedPlace.icon != nil && self.selectedPlace.icon.characters.count > 0) {
-                    let url = NSURL(string: self.selectedPlace.icon)
-                    let data = NSData(contentsOf: url! as URL)
-                    marker.icon = UIImage(data: data! as Data, scale: 1.0)
-                }
-                prevSelectedMarker = marker
-                if infoWindowView != nil {
-                    infoWindowView.removeFromSuperview()
-                }
-                let frameworkBundleId = "org.cocoapods.FindViewControl"
-                let bundle = Bundle(identifier: frameworkBundleId)
-                infoWindowView = bundle?.loadNibNamed("InfoWindowView", owner: self, options: nil)![0] as? InfoWindowView
-                infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height - 100, width: self.frame.size.width, height: 100)
-                infoWindowView.nameLabel.text = self.selectedPlace.name
-                infoWindowView.addressLabel.text = self.selectedPlace.vicinity
-                infoWindowView.getDirectionsButton.addTarget(self, action: #selector(self.onGetDirectionButtonClick(sender:)), for: UIControlEvents.touchUpInside)
-
-                self.setUpInfoView()
-
+            if useGooglePlaces == true {
+                self.setInfoViewForGooglePlaces(marker: marker)
             }
                 else {
-                self.selectedPlace = nil
+                self.setInfoViewForDBPlaces(marker: marker)
             }
-
         }
-
+            else {
+            self.hideInfoView(value: self.frame.size.height)
+        }
         return false
     }
 
+    func setInfoViewForGooglePlaces(marker: GMSMarker) {
+        if self.placesArray.count > Int(marker.accessibilityLabel!)! {
+            if prevSelectedMarker != nil && self.selectedPlace != nil {
+                if(self.selectedPlace.icon != nil && self.selectedPlace.icon.characters.count > 0) {
+                    let url = NSURL(string: self.selectedPlace.icon)
+                    let data = NSData(contentsOf: url! as URL)
+                    prevSelectedMarker.icon = UIImage(data: data! as Data, scale: 2.0)
+                }
+
+            }
+
+            self.selectedPlace = self.placesArray[Int(marker.accessibilityLabel!)!]
+            if(self.selectedPlace.icon != nil && self.selectedPlace.icon.characters.count > 0) {
+                let url = NSURL(string: self.selectedPlace.icon)
+                let data = NSData(contentsOf: url! as URL)
+                marker.icon = UIImage(data: data! as Data, scale: 1.0)
+            }
+            prevSelectedMarker = marker
+            if infoWindowView != nil {
+                infoWindowView.removeFromSuperview()
+            }
+            let bundle = Bundle(identifier: FindConstants.findBundleID)
+            infoWindowView = bundle?.loadNibNamed("InfoWindowView", owner: self, options: nil)![0] as? InfoWindowView
+            infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height - 100, width: self.frame.size.width, height: 100)
+            infoWindowView.nameLabel.text = self.selectedPlace.name
+            infoWindowView.addressLabel.text = self.selectedPlace.vicinity
+            if(self.selectedPlace.icon != nil && self.selectedPlace.icon.characters.count > 0) {
+                let url = NSURL(string: self.selectedPlace.icon)
+                let data = NSData(contentsOf: url! as URL)
+                infoWindowView.markerIcon.image = UIImage(data: data! as Data, scale: 1.0)
+            }
+
+            infoWindowView.getDirectionsButton.addTarget(self, action: #selector(self.onGetDirectionButtonClick(sender:)), for: UIControlEvents.touchUpInside)
+
+            self.setUpInfoView()
+
+        }
+            else {
+            self.selectedPlace = nil
+        }
+    }
+
+    func setInfoViewForDBPlaces(marker: GMSMarker) {
+        if self.nearbyPlacesArray.count > Int(marker.accessibilityLabel!)! {
+            if prevSelectedMarker != nil && self.selectedNearbyPlace != nil {
+                let imgName = "\(self.selectedNearbyPlace.nearLocationType!).png"
+                prevSelectedMarker.icon = UIImage(named: imgName)
+            }
+
+            self.selectedNearbyPlace = self.nearbyPlacesArray[Int(marker.accessibilityLabel!)!]
+            let imgName = "\(self.selectedNearbyPlace.nearLocationType!)Selected.png"
+            let filePath = Bundle.main.path(forResource: imgName, ofType: nil)
+            if filePath != nil {
+                marker.icon = UIImage(named: imgName)
+            }
+                else {
+                let bundle = Bundle(identifier: FindConstants.findBundleID)
+                marker.icon = UIImage(named: "default_markerSelected.png", in: bundle, compatibleWith: nil)
+            }
+
+
+
+            prevSelectedMarker = marker
+            if infoWindowView != nil {
+                infoWindowView.removeFromSuperview()
+            }
+            let bundle = Bundle(identifier: FindConstants.findBundleID)
+            infoWindowView = bundle?.loadNibNamed("InfoWindowView", owner: self, options: nil)![0] as? InfoWindowView
+            infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height - 100, width: self.frame.size.width, height: 100)
+            infoWindowView.nameLabel.text = self.selectedNearbyPlace.nearFacilityName
+            infoWindowView.addressLabel.text = self.selectedNearbyPlace.nearAddress
+            if filePath != nil {
+                infoWindowView.markerIcon.image = UIImage(named: imgName)
+            }
+                else {
+                let bundle = Bundle(identifier: FindConstants.findBundleID)
+                infoWindowView.markerIcon.image = UIImage(named: "default_markerSelected.png", in: bundle, compatibleWith: nil)
+            }
+
+
+            infoWindowView.getDirectionsButton.addTarget(self, action: #selector(self.onGetDirectionButtonClick(sender:)), for: UIControlEvents.touchUpInside)
+
+            self.setUpInfoView()
+
+        }
+            else {
+            self.selectedNearbyPlace = nil
+        }
+    }
 
     func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker) {
 
@@ -764,7 +876,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
                        delay: 0.0,
                        options: .transitionCurlUp,
                        animations: {
-            self.infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height, width: self.frame.size.width, height: 119)
+            self.infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height, width: self.frame.size.width, height: 100)
         },
                        completion: { finished in
             self.addSubview(self.infoWindowView)
@@ -772,7 +884,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
                            delay: 0.0,
                            options: .transitionCurlDown,
                            animations: {
-                self.infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height - 119, width: self.frame.size.width, height: 119)
+                self.infoWindowView.frame = CGRect(x: 0, y: self.frame.size.height - 100, width: self.frame.size.width, height: 100)
             },
                            completion: { finished in
             })
@@ -782,11 +894,29 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     // MARK: - Inde info window
     func hideInfoView(value: CGFloat) {
 
+        if useGooglePlaces == true {
+            if prevSelectedMarker != nil && self.selectedPlace != nil {
+                if(self.selectedPlace.icon != nil && self.selectedPlace.icon.characters.count > 0) {
+                    let url = NSURL(string: self.selectedPlace.icon)
+                    let data = NSData(contentsOf: url! as URL)
+                    prevSelectedMarker.icon = UIImage(data: data! as Data, scale: 2.0)
+                }
+            }
+        }
+            else {
+            if prevSelectedMarker != nil && self.selectedNearbyPlace != nil {
+                let imgName = "\(self.selectedNearbyPlace.nearLocationType!).png"
+                prevSelectedMarker.icon = UIImage(named: imgName)
+            }
+        }
+
         UIView.animate(withDuration: 0.3,
                        delay: 0.0,
                        options: .transitionCurlUp,
                        animations: {
-            self.infoWindowView.frame = CGRect(x: 0, y: value, width: self.frame.size.width, height: 119)
+            if self.infoWindowView != nil {
+                self.infoWindowView.frame = CGRect(x: 0, y: value, width: self.frame.size.width, height: 100)
+            }
         },
                        completion: { finished in
             if self.infoWindowView != nil {
@@ -796,7 +926,12 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     }
 
     @IBAction func onGetDirectionButtonClick(sender: AnyObject) {
-        let http = "http://maps.apple.com/?saddr=\(self.currentLocationMarker.position.latitude),\(self.currentLocationMarker.position.longitude)&daddr=\(self.selectedPlace.geometry.location.lat!),\(self.self.selectedPlace.geometry.location.lng!)"
+
+        var http = "http://maps.apple.com/?saddr=\(self.currentLocationMarker.position.latitude),\(self.currentLocationMarker.position.longitude)&daddr=\(self.selectedNearbyPlace.nearLat!),\(self.self.selectedNearbyPlace.nearLong!)"
+        if useGooglePlaces == true {
+
+            http = "http://maps.apple.com/?saddr=\(self.currentLocationMarker.position.latitude),\(self.currentLocationMarker.position.longitude)&daddr=\(self.selectedPlace.geometry.location.lat!),\(self.self.selectedPlace.geometry.location.lng!)"
+        }
         UIApplication.shared.openURL(NSURL(string: http)! as URL)
 
     }
@@ -862,8 +997,7 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
             if((resultsArray?.count)! > 0) {
                 self.gisAddressResultArray = NSMutableArray(array: resultsArray!)
                 if((resultsArray?.count)! > 1) {
-                    let frameworkBundleId = "org.cocoapods.FindViewControl"
-                    let bundle = Bundle(identifier: frameworkBundleId)
+                    let bundle = Bundle(identifier: FindConstants.findBundleID)
                     let multipleLocationObj = bundle?.loadNibNamed("FindMultipleLocationSelectionViewController", owner: self, options: nil)![0] as! FindMultipleLocationSelectionViewController
                     multipleLocationObj.setLocaArray(locArray: self.gisAddressResultArray)
                     multipleLocationObj.delegate = self
@@ -918,13 +1052,54 @@ class FindView: UIView, UITextFieldDelegate, FindFilterTableViewControllerDelega
     }
 
 
+    func sortArray() {
+        let nearbyArray = self.getNearbyArray(nearArray: self.nearbyPlacesArray)
+        self.nearbyPlacesArray = [NearByInfo]()
+        for filterObj in filterArray {
+            let array = nearbyArray.filter { $0.nearLocationType == filterObj.filterID }
+            self.sortArray(nearByArray: array)
+        }
+        self.plotNearbyPlacesMarker()
 
+    }
+
+    func sortArray(nearByArray: [NearByInfo]) {
+
+        let array = nearByArray.sorted { (p1: NearByInfo, p2: NearByInfo) -> Bool in
+            return p1.distance < p2.distance
+        }
+        for i in stride(from: 0, through: self.individualMarkersCount, by: 1) {
+            if array.count > i {
+                self.nearbyPlacesArray.append(array[i])
+            }
+        }
+    }
+
+    func getNearbyArray(nearArray: [NearByInfo]) -> [NearByInfo] {
+        var nearbyArray = [NearByInfo]()
+        for nearInfo in nearArray {
+            nearInfo.distance = self.getDistance(fromLat: self.currentLocationMarker.position.latitude, fromLong: self.currentLocationMarker.position.longitude, toLat: Double(nearInfo.nearLat)!, toLong: Double(nearInfo.nearLat)!)
+            nearbyArray.append(nearInfo)
+        }
+        return nearbyArray
+    }
+
+    func getDistance(fromLat: Double, fromLong: Double, toLat: Double, toLong: Double) -> Double {
+        let latDist = self.toRad(val: toLat - fromLat)
+        let longDist = self.toRad(val: toLong - fromLong)
+        let a = sin(latDist / 2) * sin(latDist / 2) + cos(self.toRad(val: fromLat)) * cos(self.toRad(val: toLat)) * sin(longDist / 2) * sin(longDist / 2)
+        let c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return self.radiusOfEarth * c * self.conversionKmToMiles
+    }
+
+    func toRad(val: Double) -> Double {
+        return val * M_PI / 180
+    }
 }
 
 extension String {
     var localized: String {
-        let frameworkBundleId = "org.cocoapods.FindViewControl"
-        let bundle = Bundle(identifier: frameworkBundleId)
+        let bundle = Bundle(identifier: FindConstants.findBundleID)
         return NSLocalizedString(self, tableName: nil, bundle: bundle!, value: "", comment: "")
     }
 }

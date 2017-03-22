@@ -67,8 +67,7 @@ class FindFilterTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: "Cell")
-        let frameworkBundleId = "org.cocoapods.FindViewControl"
-        let bundle = Bundle(identifier: frameworkBundleId)
+        let bundle = Bundle(identifier: FindConstants.findBundleID)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
 
@@ -99,8 +98,7 @@ class FindFilterTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
-        let frameworkBundleId = "org.cocoapods.FindViewControl"
-        let bundle = Bundle(identifier: frameworkBundleId)
+        let bundle = Bundle(identifier: FindConstants.findBundleID)
         let filterType: FilterObject = self.filterArray[indexPath.row]
 
         let cell: UITableViewCell = tableView.cellForRow(at: indexPath as IndexPath)!
