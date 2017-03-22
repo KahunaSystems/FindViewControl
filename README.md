@@ -13,7 +13,7 @@ FindViewControl is written in Swift
 ```ruby
 pod 'FindViewControl', :git => 'https://github.com/Kruks/FindViewControl.git', :tag => '1.0.12'
 ```
-Also, add below code at the end of the pod file
+Also, add below code at the end of the pod file.
 ```ruby
 pre_install do |installer|
     def installer.verify_no_static_framework_transitive_dependencies; end
@@ -28,7 +28,7 @@ You need to add GoogleMaps framework manually, for that go to "Pods" project, se
 "${PODS_ROOT}/GoogleMaps/Maps/Frameworks"
 ```
 
-### Swift Code:
+### Swift Code to plot places From Places API:
 
 ```swift
 (Add this code in viewdidload for viewcontroller)
@@ -48,7 +48,19 @@ You need to add GoogleMaps framework manually, for that go to "Pods" project, se
 
 // Init Find Control
 
- _ =  FindControl.init(viewController: self,googleAPIKey: "AIzXXXXXXXXXXXXXXXXXX8sk",useGooglePlaces: true, filterArray: pickerArray, gisURL: "GIS validation URl", googlePlacesKey: "AIzaXXXXXXXXXXXXXXXXXXFFMc", defaultLattitude: 34.052235, defaultLongitude: -118.243683, defaultAddress: "test")
+ _ =  FindControl.init(viewController: self,googleAPIKey: "AIzXXXXXXXXXXXXXXXXXX8sk",useGooglePlaces: true, filterArray: pickerArray, gisURL: "GIS validation URl", googlePlacesKey: "AIzaXXXXXXXXXXXXXXXXXXFFMc", defaultLattitude: 34.052235, defaultLongitude: -118.243683, defaultAddress: "test", individualMarkersCount: 4)
+ 
+```
+
+### Swift Code to plot places From DB:
+Add DB with name "NearBy.sqlite" that contains places list. Also, add markers with names of filter(Ex:- Parking Lots.png)for normal icon & for selected icon add "Selected" title with filter name (Ex:- Parking LotsSelected.png).
+
+
+```swift
+(Add this code in viewdidload for viewcontroller)
+// Init Find Control
+
+ _ =  FindControl.init(viewController: self, googleAPIKey: "AIzXXXXXXXXXXXXXXXXXX8sk", useGooglePlaces: flase, filterArray: [FilterObject](), gisURL: "GIS validation URl", googlePlacesKey: "", defaultLattitude: 34.052235, defaultLongitude: -118.243683, defaultAddress: "test", individualMarkersCount: 4)
  
 ```
 
