@@ -79,7 +79,7 @@ let dataVal = FindHandler().addDataInSqlite(addSqlite: NSDictionary, type: "All"
 let dataVal = FindHandler().updateDataInSqlite(updateSqlite: NSDictionary)
  
 ```
-### Swift Code to delete data in DB:
+### Swift Code to delete data from DB:
 
 ```swift
 FindHandler().updateDataInSqlite(deleteSqlite: NSArray)
