@@ -67,4 +67,21 @@ Add DB with name "NearBy.sqlite" that contains places list. Also, add markers wi
  _ =  FindControl.init(viewController: self, googleAPIKey: "AIzXXXXXXXXXXXXXXXXXX8sk", useGooglePlaces: flase, filterArray: [FilterObject](), gisURL: "GIS validation URl", googlePlacesKey: "", defaultLattitude: 34.052235, defaultLongitude: -118.243683, defaultAddress: "test", individualMarkersCount: 4)
  
 ```
+### Swift Code to add data in DB:
 
+```swift
+let dataVal = FindHandler().addDataInSqlite(addSqlite: NSDictionary, type: "All")
+ 
+```
+### Swift Code to update data in DB:
+
+```swift
+let dataVal = FindHandler().updateDataInSqlite(updateSqlite: NSDictionary)
+ 
+```
+### Swift Code to delete data in DB:
+
+```swift
+FindHandler().updateDataInSqlite(deleteSqlite: NSArray)
+ 
+```
