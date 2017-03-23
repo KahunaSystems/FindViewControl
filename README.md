@@ -22,7 +22,11 @@ end
 ## Add FindViewControl To Project
 
 ### Initial Setup:
-You need to add GoogleMaps framework manually, for that go to "Pods" project, select target "FindViewControl" goto Build Phases in "Link Binary With Libraries" add GoogleMaps.framework from project. Also in Build Settings in "Framework Search Paths", please verify the below two paths are added for both debug & release(If not, add it manually):-
+You need to add GoogleMaps framework manually, for that follow below steps:-
+1) Go to "Pods" project, select target "FindViewControl" goto Build Phases in "Link Binary With Libraries" add GoogleMaps.framework from project. 
+2) In build settings of both FindViewControl framework & app target set "Enable Bitcode" to No
+3) Also in Build Settings in "Framework Search Paths", please verify the below two paths are added for both debug & release(If not, add it manually) :-
+
 ```ruby
 "${PODS_ROOT}/GoogleMaps/Base/Frameworks"
 "${PODS_ROOT}/GoogleMaps/Maps/Frameworks"
