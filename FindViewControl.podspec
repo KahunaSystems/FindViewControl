@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.description  = "FindViewControl for plotting nearby places based on location"
   s.homepage     = "https://github.com/Kruks/FindViewControl/blob/master/README.md"
   s.license      = "MIT"
-  s.author             = "Kahuna"
+  s.author             = "Krutika Gandhi"
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/Kruks/FindViewControl.git", :tag => "#{s.version}" }
   s.source_files  = "FindViewControl", "FindViewControl/**/*.{h,m,swift,xib,png,strings}"
